@@ -1,7 +1,6 @@
 # GyroStepDetector
 
-##Basically, i am trying to build algorithm that filters out the "rebound" from gyroscopes, and detects steps, the direction of those,
-##and jumps and crouches, for my obnidirectional tredmil.
+## Basically, i am trying to build algorithm that filters out the "rebound" from gyroscopes, and detects steps, the direction of those, and jumps and crouches, for my obnidirectional tredmil.
 
 hardware:
 
