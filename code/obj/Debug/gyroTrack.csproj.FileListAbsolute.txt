@@ -34,3 +34,7 @@ E:\GIT repositories\ObniAccelTrack\code\obj\Debug\gyroTrack.csproj.CoreCompileIn
 E:\GIT repositories\ObniAccelTrack\code\obj\Debug\gyroTrack.csproj.CopyComplete
 E:\GIT repositories\ObniAccelTrack\code\obj\Debug\test.exe
 E:\GIT repositories\ObniAccelTrack\code\obj\Debug\test.pdb
+E:\GIT repositories\ObniAccelTrack\code\bin\Debug\test.exe.manifest
+E:\GIT repositories\ObniAccelTrack\code\bin\Debug\test.application
+E:\GIT repositories\ObniAccelTrack\code\obj\Debug\test.exe.manifest
+E:\GIT repositories\ObniAccelTrack\code\obj\Debug\test.application
