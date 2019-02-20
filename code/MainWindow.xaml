@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:test"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Background="#FF2E2E32" Width="1046.571">
+        Title="Kierans Gyro Step Alogrithm K.G.S.A" Height="533.193" Background="#FF2E2E32" Width="1036.487" ResizeMode="NoResize">
     <Grid RenderTransformOrigin="0.99,0.979">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="61*"/>
@@ -41,7 +41,7 @@
                 </TransformGroup>
             </ProgressBar.RenderTransform>
         </ProgressBar>
-        <Slider x:Name="paramVAL" Grid.Column="1" HorizontalAlignment="Left" Margin="416,273,0,0" VerticalAlignment="Top" Width="186" RenderTransformOrigin="0.5,0.5" Maximum="1000" SmallChange="1">
+        <Slider x:Name="paramVAL" Grid.Column="1" HorizontalAlignment="Left" Margin="416,273,0,0" VerticalAlignment="Top" Width="186" RenderTransformOrigin="0.5,0.5" Maximum="1000" SmallChange="1" Value="800">
             <Slider.RenderTransform>
                 <TransformGroup>
                     <ScaleTransform/>
@@ -106,14 +106,15 @@
                 <CheckBox Content="filter down" Grid.Column="1" HorizontalAlignment="Left" Margin="0,361,0,0" VerticalAlignment="Top" Background="#FFE6E6E6" Foreground="#FFE6E6E6" Checked="CheckBox_Checked"/>
                 <Grid RenderTransformOrigin="0.99,0.979" Grid.ColumnSpan="2">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="61*"/>
-                        <ColumnDefinition Width="335*"/>
+                        <ColumnDefinition Width="35*"/>
+                        <ColumnDefinition Width="124*"/>
+                        <ColumnDefinition Width="871*"/>
                     </Grid.ColumnDefinitions>
-                    <Button x:Name="Calibrate" Content="Calibrate" Grid.Column="1" HorizontalAlignment="Left" Margin="502,93,0,0" VerticalAlignment="Top" Width="94" Click="Button_Click" Cursor="Hand" Height="34" RenderTransformOrigin="1.212,0.72"/>
-                    <Label Content="filter parameter" Grid.Column="1" HorizontalAlignment="Left" Margin="502,154,0,0" VerticalAlignment="Top" Background="#00000000" Foreground="#FFC9CBCB"/>
-                    <Label x:Name="val" Content="0" Grid.Column="1" HorizontalAlignment="Left" Margin="527,225,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.422,-0.73" Foreground="#FFB9B9B9"/>
-                    <TextBox x:Name="logBOX" Grid.Column="1" HorizontalAlignment="Left" Height="294" Margin="635,115,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="217"/>
-                    <Label Content="log:" Grid.Column="1" HorizontalAlignment="Left" Margin="628,70,0,0" VerticalAlignment="Top" RenderTransformOrigin="2.838,2.544" Foreground="White">
+                    <Button x:Name="Calibrate" Content="Calibrate" Grid.Column="2" HorizontalAlignment="Left" Margin="502,93,0,0" VerticalAlignment="Top" Width="94" Click="Button_Click" Cursor="Hand" Height="34" RenderTransformOrigin="1.212,0.72"/>
+                    <Label Content="filter parameter" Grid.Column="2" HorizontalAlignment="Left" Margin="502,154,0,0" VerticalAlignment="Top" Background="#00000000" Foreground="#FFC9CBCB"/>
+                    <Label x:Name="val" Content="0" Grid.Column="2" HorizontalAlignment="Left" Margin="527,225,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.422,-0.73" Foreground="#FFB9B9B9"/>
+                    <TextBox x:Name="logBOX" Grid.Column="2" HorizontalAlignment="Left" Height="294" Margin="635,115,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="217"/>
+                    <Label Content="log:" Grid.Column="2" HorizontalAlignment="Left" Margin="628,70,0,0" VerticalAlignment="Top" RenderTransformOrigin="2.838,2.544" Foreground="White">
                         <Label.RenderTransform>
                             <TransformGroup>
                                 <ScaleTransform/>
@@ -123,15 +124,22 @@
                             </TransformGroup>
                         </Label.RenderTransform>
                     </Label>
-                    <Button x:Name="KeyBoardEnabe" Content="activate keboard" Grid.Column="1" HorizontalAlignment="Left" Margin="724,21,0,0" VerticalAlignment="Top" Width="117" Height="48" Click="KeyBoardEnabe_Click" RenderTransformOrigin="0.67,1.616"/>
-                    <CheckBox x:Name="filterup1" Content="filter up&#xA;" Grid.Column="1" HorizontalAlignment="Left" Margin="0,38,0,0" VerticalAlignment="Top" Background="#FFE6E6E6" Foreground="#FFE6E6E6" Checked="CheckBox_Checked"/>
-                    <CheckBox x:Name="filterup2" Content="filter up&#xA;" Grid.Column="1" HorizontalAlignment="Left" Margin="170,38,0,0" VerticalAlignment="Top" Background="#FFE6E6E6" Foreground="#FFE6E6E6" Checked="CheckBox_Checked_2"/>
-                    <CheckBox x:Name="filterup3" Content="filter up&#xA;" Grid.Column="1" HorizontalAlignment="Left" Margin="343,38,0,0" VerticalAlignment="Top" Background="#FFE6E6E6" Foreground="#FFE6E6E6" Checked="CheckBox_Checked_1" IsEnabled="False"/>
-                    <CheckBox Content="filter down" Grid.Column="1" HorizontalAlignment="Left" Margin="0,361,0,0" VerticalAlignment="Top" Background="#FFE6E6E6" Foreground="#FFE6E6E6" Checked="CheckBox_Checked"/>
-                    <CheckBox x:Name="filterDown1" Content="filter down" Grid.Column="1" HorizontalAlignment="Left" Margin="0,361,0,0" VerticalAlignment="Top" Background="#FFE6E6E6" Foreground="#FFE6E6E6" Checked="CheckBox_Checked" RenderTransformOrigin="2.814,0.52"/>
-                    <CheckBox x:Name="filterDown2" Content="filter down" Grid.Column="1" HorizontalAlignment="Left" Margin="170,361,0,0" VerticalAlignment="Top" Background="#FFE6E6E6" Foreground="#FFE6E6E6" Checked="CheckBox_Checked" RenderTransformOrigin="2.814,0.52"/>
-                    <CheckBox x:Name="filterDown3" Content="filter down" Grid.Column="1" HorizontalAlignment="Left" Margin="343,361,0,0" VerticalAlignment="Top" Background="#FFE6E6E6" Foreground="#FFE6E6E6" Checked="CheckBox_Checked" RenderTransformOrigin="2.814,0.52"/>
-                    <Button x:Name="Reset_step" Content="Button" Grid.Column="1" HorizontalAlignment="Left" Margin="502,38,0,0" VerticalAlignment="Top" Width="94" Height="31" Click="Reset_step_Click"/>
+                    <Button x:Name="KeyBoardEnabe" Content="activate keboard" Grid.Column="2" HorizontalAlignment="Left" Margin="724,21,0,0" VerticalAlignment="Top" Width="117" Height="48" Click="KeyBoardEnabe_Click" RenderTransformOrigin="0.67,1.616"/>
+                    <CheckBox x:Name="filterup1" Content="filter up&#xA;" Grid.Column="2" HorizontalAlignment="Left" Margin="0,38,0,0" VerticalAlignment="Top" Background="#FFE6E6E6" Foreground="#FFE6E6E6" Checked="CheckBox_Checked"/>
+                    <CheckBox x:Name="filterup2" Content="filter up&#xA;" Grid.Column="2" HorizontalAlignment="Left" Margin="170,38,0,0" VerticalAlignment="Top" Background="#FFE6E6E6" Foreground="#FFE6E6E6" Checked="CheckBox_Checked_2"/>
+                    <CheckBox x:Name="filterup3" Content="filter up&#xA;" Grid.Column="2" HorizontalAlignment="Left" Margin="343,38,0,0" VerticalAlignment="Top" Background="#FFE6E6E6" Foreground="#FFE6E6E6" Checked="CheckBox_Checked_1" IsEnabled="False"/>
+                    <CheckBox Content="filter down" Grid.Column="2" HorizontalAlignment="Left" Margin="0,361,0,0" VerticalAlignment="Top" Background="#FFE6E6E6" Foreground="#FFE6E6E6" Checked="CheckBox_Checked"/>
+                    <CheckBox x:Name="filterDown1" Content="filter down" Grid.Column="2" HorizontalAlignment="Left" Margin="0,361,0,0" VerticalAlignment="Top" Background="#FFE6E6E6" Foreground="#FFE6E6E6" Checked="CheckBox_Checked" RenderTransformOrigin="2.814,0.52"/>
+                    <CheckBox x:Name="filterDown2" Content="filter down" Grid.Column="2" HorizontalAlignment="Left" Margin="170,361,0,0" VerticalAlignment="Top" Background="#FFE6E6E6" Foreground="#FFE6E6E6" Checked="CheckBox_Checked" RenderTransformOrigin="2.814,0.52"/>
+                    <CheckBox x:Name="filterDown3" Content="filter down" Grid.Column="2" HorizontalAlignment="Left" Margin="343,361,0,0" VerticalAlignment="Top" Background="#FFE6E6E6" Foreground="#FFE6E6E6" Checked="CheckBox_Checked" RenderTransformOrigin="2.814,0.52"/>
+                    <Button x:Name="Reset_step" Content="Reset Step ALGO" Grid.Column="2" HorizontalAlignment="Left" Margin="502,38,0,0" VerticalAlignment="Top" Width="94" Height="31" Click="Reset_step_Click"/>
+                    <Button x:Name="clearLog" Content="clear Log" Grid.Column="2" HorizontalAlignment="Left" Margin="777,430,0,0" VerticalAlignment="Top" Width="75" Click="ClearLog_Click"/>
+                    <Button x:Name="enable_COM" Content="Start!" HorizontalAlignment="Left" Margin="226,459,0,0" VerticalAlignment="Top" Width="75" Height="26" Grid.Column="2" Click="Enable_COM_Click"/>
+                    <ComboBox x:Name="COMguiList" HorizontalAlignment="Left" Margin="55,459,0,0" VerticalAlignment="Top" Width="120" Loaded="COMguiList_Loaded" Grid.Column="2"/>
+                    <Label Content="select arduino channel:" HorizontalAlignment="Left" Margin="27.185,455,0,0" VerticalAlignment="Top" Width="137" Grid.ColumnSpan="2" Foreground="#FFD6D6D6" Grid.Column="1"/>
+                    <CheckBox x:Name="AX1check" Content="axis1" Grid.Column="2" HorizontalAlignment="Left" Margin="635,469,0,0" VerticalAlignment="Top" Height="23" Width="56" IsChecked="True" Background="White" RenderTransformOrigin="0.096,0.378"/>
+                    <CheckBox x:Name="AX2check" Content="axis2" Grid.Column="2" HorizontalAlignment="Left" Margin="714,469,0,0" VerticalAlignment="Top" Height="23" Width="56" IsChecked="True" Background="White"/>
+                    <CheckBox x:Name="AX3check" Content="axis3" Grid.Column="2" HorizontalAlignment="Left" Margin="796,469,0,0" VerticalAlignment="Top" Height="23" Width="56" IsChecked="True" Background="White"/>
 
                 </Grid>
 
