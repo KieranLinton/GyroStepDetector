@@ -4,6 +4,8 @@
     using System.IO.Ports;
     using System.Windows;
     using WindowsInput;
+    using System.Timers;
+    using System;
 
     public partial class MainWindow : Window
     {
@@ -30,6 +32,11 @@
             public int centerCords = 0;
             public bool logEnabled = true;
 
+            Timer count = new Timer();
+            public int countTill = 2000;
+            
+            
+            
             public bool valOverParam = false;
             public bool valUnderParam = false;
             public bool inCenter = true;
@@ -50,8 +57,6 @@
                     valOverParam = true;
                     valUnderParam = false;
                     inCenter = false;
-
-
                     Debug.Write("over!!  ");
                 }
 
@@ -74,12 +79,14 @@
                 {
                     goingUp = true;
                     up = true;
-                    if(logEnabled){toLog = name + " is going up";}
+                    SetTimer(countTill);
+                    if (logEnabled){toLog = name + " is going up";}
                 }
                 if (valUnderParam && goingUp == false && goingDown == false && UpsRebound == false && DownsRebound == false)
                 {
                     goingDown = true;
                     down = true;
+                    SetTimer(countTill);
                     if (logEnabled) { toLog = name + " is going down"; }
                 }
                 if (valUnderParam && goingUp == true)
@@ -96,14 +103,30 @@
                 {
                     UpsRebound = false;
                     up = false;
+                    count.Stop();
+                    
                     if (logEnabled) { toLog = name + " has finished going up"; }
                 }
                 if (inCenter && DownsRebound == true)
                 {
                     DownsRebound = false;
                     down = false;
+                    count.Stop();
                     if (logEnabled) { toLog = name + " has finished going down"; }
                 }
+            }
+            void timerFinished(Object source, ElapsedEventArgs e)
+            {
+                count.Stop();
+                RESET();
+                if (logEnabled) { toLog = "finished (due to timeout)"; }
+            }
+            private  void SetTimer(int interval)
+            {
+                
+                count.Interval = interval;
+                count.Elapsed += new ElapsedEventHandler(timerFinished);
+                count.Start();
             }
 
             internal void RESET()
@@ -129,10 +152,12 @@
         {
             // sim.Keyboard.KeyDown(VirtualKeyCode.VK_W);
 
-            Debug.WriteLine(SP.ReadLine());
-            string[] inputList = SP.ReadLine().Split(',');
+            
+           
             try
             {
+                Debug.WriteLine(SP.ReadLine());
+                string[] inputList = SP.ReadLine().Split(',');
                 AX1.value = int.Parse(inputList[0]);
                 AX2.value = int.Parse(inputList[1]);
                 AX3.value = int.Parse(inputList[2]);
@@ -185,6 +210,20 @@
                 }
             }
         }
+        void portScan()
+        {
+            //setting the dropDown COM list....
+            this.Dispatcher.Invoke(() =>
+            {
+                string[] AvailableCOMS = SerialPort.GetPortNames();
+                COMguiList.Items.Clear();
+                for (int i = 0; i < AvailableCOMS.Length; i++)
+                {
+                    
+                    COMguiList.Items.Insert(i, AvailableCOMS[i]);
+                }
+            });
+        }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
@@ -221,15 +260,8 @@
         }
         private void COMguiList_Loaded(object sender, RoutedEventArgs e)
         {
-            //setting the dropDown COM list....
-            this.Dispatcher.Invoke(() =>
-            {
-                string[] AvailableCOMS = SerialPort.GetPortNames();
-                for (int i = 0; i < AvailableCOMS.Length; i++)
-                {
-                    COMguiList.Items.Insert(i, AvailableCOMS[i]);
-                }
-            });
+            portScan();
+            sendToLog("populating COM list");
         }
         private void ClearLog_Click(object sender, RoutedEventArgs e)
         {
@@ -239,7 +271,11 @@
                 
             });
         }
-
+        private void ScanForPorts_Click(object sender, RoutedEventArgs e)
+        {
+            portScan();
+            sendToLog("refreshing COM list");
+        }
         private void Enable_COM_Click(object sender, RoutedEventArgs e)
         {
            
@@ -268,6 +304,6 @@
         {
         }
 
-        
+       
     }
 }

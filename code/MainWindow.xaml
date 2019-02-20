@@ -41,7 +41,7 @@
                 </TransformGroup>
             </ProgressBar.RenderTransform>
         </ProgressBar>
-        <Slider x:Name="paramVAL" Grid.Column="1" HorizontalAlignment="Left" Margin="416,273,0,0" VerticalAlignment="Top" Width="186" RenderTransformOrigin="0.5,0.5" Maximum="1000" SmallChange="1" Value="800">
+        <Slider x:Name="paramVAL" Grid.Column="1" HorizontalAlignment="Left" Margin="416,273,0,0" VerticalAlignment="Top" Width="186" RenderTransformOrigin="0.5,0.5" Maximum="2500" SmallChange="1" Value="1850">
             <Slider.RenderTransform>
                 <TransformGroup>
                     <ScaleTransform/>
@@ -113,7 +113,7 @@
                     <Button x:Name="Calibrate" Content="Calibrate" Grid.Column="2" HorizontalAlignment="Left" Margin="502,93,0,0" VerticalAlignment="Top" Width="94" Click="Button_Click" Cursor="Hand" Height="34" RenderTransformOrigin="1.212,0.72"/>
                     <Label Content="filter parameter" Grid.Column="2" HorizontalAlignment="Left" Margin="502,154,0,0" VerticalAlignment="Top" Background="#00000000" Foreground="#FFC9CBCB"/>
                     <Label x:Name="val" Content="0" Grid.Column="2" HorizontalAlignment="Left" Margin="527,225,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.422,-0.73" Foreground="#FFB9B9B9"/>
-                    <TextBox x:Name="logBOX" Grid.Column="2" HorizontalAlignment="Left" Height="294" Margin="635,115,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="217"/>
+                    <TextBox x:Name="logBOX" Grid.Column="2" HorizontalAlignment="Left" Height="294" Margin="635,115,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="217" Background="Black" Foreground="#FF20FF15"/>
                     <Label Content="log:" Grid.Column="2" HorizontalAlignment="Left" Margin="628,70,0,0" VerticalAlignment="Top" RenderTransformOrigin="2.838,2.544" Foreground="White">
                         <Label.RenderTransform>
                             <TransformGroup>
@@ -140,6 +140,7 @@
                     <CheckBox x:Name="AX1check" Content="axis1" Grid.Column="2" HorizontalAlignment="Left" Margin="635,469,0,0" VerticalAlignment="Top" Height="23" Width="56" IsChecked="True" Background="White" RenderTransformOrigin="0.096,0.378"/>
                     <CheckBox x:Name="AX2check" Content="axis2" Grid.Column="2" HorizontalAlignment="Left" Margin="714,469,0,0" VerticalAlignment="Top" Height="23" Width="56" IsChecked="True" Background="White"/>
                     <CheckBox x:Name="AX3check" Content="axis3" Grid.Column="2" HorizontalAlignment="Left" Margin="796,469,0,0" VerticalAlignment="Top" Height="23" Width="56" IsChecked="True" Background="White"/>
+                    <Button x:Name="scanForPorts" Content="Rescan" Grid.Column="2" HorizontalAlignment="Left" Margin="55,434,0,0" VerticalAlignment="Top" Width="75" RenderTransformOrigin="0.267,0.445" Click="ScanForPorts_Click"/>
 
                 </Grid>
 
