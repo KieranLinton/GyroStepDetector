@@ -12,6 +12,6 @@ hardware:
 
 ![](/screenshot.PNG)
 
-
+![](/snapshot2.PNG)
 
 PS if you come across this and becomes offended by my horrific code(woudnt blame ya), feel free to correct/educate me, im willing to learns
