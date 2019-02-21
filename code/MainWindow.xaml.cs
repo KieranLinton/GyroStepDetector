@@ -6,15 +6,18 @@
     using WindowsInput;
     using System.Timers;
     using System;
+   
 
     public partial class MainWindow : Window
     {
         public SerialPort SP = new SerialPort();
         internal InputSimulator sim = new InputSimulator();//for the keyboard
 
-        internal new ACCELERO AX1 = new ACCELERO("accelerometer1");
-        internal new ACCELERO AX2 = new ACCELERO("accelerometer2");
-        internal new ACCELERO AX3 = new ACCELERO("accelerometer3");
+        public static bool enableRebound ;
+
+        internal new ACCELERO AX1 = new ACCELERO("axis1");
+        internal new ACCELERO AX2 = new ACCELERO("axis2");
+        internal new ACCELERO AX3 = new ACCELERO("axis3");
 
         public int param = 20;
 
@@ -52,7 +55,7 @@
             public void UpdateParameterMath(int paramd)
             {
 
-                if (value > (centerCords + paramd))
+                if (value > (centerCords + paramd)) //if its over the parameter
                 {
                     valOverParam = true;
                     valUnderParam = false;
@@ -60,14 +63,14 @@
                     Debug.Write("over!!  ");
                 }
 
-                if (value < (centerCords - paramd))
+                if (value < (centerCords - paramd)) //if its under
                 {
                     valOverParam = false;
                     valUnderParam = true;
                     inCenter = false;
                     Debug.Write("undrr!!  ");
                 }
-                if (value < (centerCords + paramd) && value > (centerCords - paramd))
+                if (value < (centerCords + paramd) && value > (centerCords - paramd)) //if its in the center
                 {
                     valOverParam = false;
                     valUnderParam = false;
@@ -75,51 +78,74 @@
                     Debug.Write("center!!  ");
                 }
 
-                if (valOverParam && goingUp == false && goingDown == false && UpsRebound == false && DownsRebound == false)
+                if (valOverParam && goingUp == false && goingDown == false && UpsRebound == false && DownsRebound == false) //PHASE 1 of  going up
                 {
                     goingUp = true;
                     up = true;
                     SetTimer(countTill);
-                    if (logEnabled){toLog = name + " is going up";}
+                    if (logEnabled){toLog = name + " is going up.";}
                 }
-                if (valUnderParam && goingUp == false && goingDown == false && UpsRebound == false && DownsRebound == false)
+                if (valUnderParam && goingUp == false && goingDown == false && UpsRebound == false && DownsRebound == false) //PHASE 1 of going down
                 {
                     goingDown = true;
                     down = true;
                     SetTimer(countTill);
-                    if (logEnabled) { toLog = name + " is going down"; }
+                    if (logEnabled) { toLog = name + " is going down."; }
                 }
-                if (valUnderParam && goingUp == true)
+                if (valUnderParam && goingUp == true && enableRebound == true) // PHASE2 of going up (rebound)
                 {
                     goingUp = false;
                     UpsRebound = true;
                 }
-                if (valOverParam && goingDown == true)
+                if (valOverParam && goingDown == true && enableRebound == true) //PHASE2 of going down (rebound)
                 {
                     goingDown = false;
                     DownsRebound = true;
                 }
-                if (inCenter && UpsRebound == true)
+                if (inCenter && UpsRebound == true)  //PHASE3 of going up (end of rebound)
                 {
                     UpsRebound = false;
                     up = false;
                     count.Stop();
                     
-                    if (logEnabled) { toLog = name + " has finished going up"; }
+                    if (logEnabled) { toLog = name + " has finished going up."; }
                 }
-                if (inCenter && DownsRebound == true)
+                if (inCenter && DownsRebound == true) //PHASE3 of going down (end of rebound)
                 {
                     DownsRebound = false;
                     down = false;
                     count.Stop();
-                    if (logEnabled) { toLog = name + " has finished going down"; }
+                    if (logEnabled) { toLog = name + " has finished going down."; }
+                }
+                if (goingUp == true && inCenter && enableRebound == false) // PHASE2 and PHASE3 of up (skipping rebound)
+                {
+                    count.Stop();
+
+                    goingUp = false;
+                    UpsRebound = false;
+                    up = false;
+
+                    if (logEnabled) { toLog = name + " has finished going up. *"; }
+                }
+                if (goingDown == true && inCenter && enableRebound == false) // PHASE2 and PHASE3 of up (skipping rebound)
+                {
+                    count.Stop();
+                   
+                    goingDown = false;
+                    DownsRebound = false;
+                    down = false;
+
+                    if (logEnabled) { toLog = name + " has finished going down. *"; }
                 }
             }
             void timerFinished(Object source, ElapsedEventArgs e)
             {
+                if (logEnabled) { toLog = "finished (due to timeout).";}
                 count.Stop();
+                
                 RESET();
-                if (logEnabled) { toLog = "finished (due to timeout)"; }
+               
+    
             }
             private  void SetTimer(int interval)
             {
@@ -131,14 +157,13 @@
 
             internal void RESET()
             {
+                    up = false;
+                    down = false;
 
-                up = false;
-                down = false;
-
-                goingUp = false;
-                UpsRebound = false;
-                goingDown = false;
-                DownsRebound = false;
+                    goingUp = false;
+                    UpsRebound = false;
+                    goingDown = false;
+                    DownsRebound = false;
             }
         }
 
@@ -164,7 +189,7 @@
             }
             catch
             {
-                sendToLog("Error reading cereal values");
+                sendToLog("Error reading cereal values.");
             }
 
             //GUI elements
@@ -222,6 +247,29 @@
                     
                     COMguiList.Items.Insert(i, AvailableCOMS[i]);
                 }
+                if(AvailableCOMS.Length == 0 )
+                {
+                    sendToLog("No COMS available.");
+                }
+                else
+                {
+                    sendToLog(AvailableCOMS.Length + " COMs have been found.");
+                }
+            });
+        }
+        private void sendToLog(string message)
+        {
+            this.Dispatcher.Invoke(() =>
+            {
+                logBOX.AppendText(System.Environment.NewLine + System.Environment.NewLine + "# " + message);
+                logBOX.ScrollToEnd();
+
+                //enabling/disabling LOG from accelerometers--
+                {
+                    AX1.logEnabled = AX1check.IsChecked.GetValueOrDefault();
+                    AX2.logEnabled = AX2check.IsChecked.GetValueOrDefault();
+                    AX3.logEnabled = AX3check.IsChecked.GetValueOrDefault();
+                }
             });
         }
 
@@ -233,24 +281,11 @@
 
             sendToLog("center cords have been set to " + AX1.centerCords.ToString() + ", " + AX2.centerCords.ToString() + "  and  " + AX3.centerCords.ToString());
         }
-        private void sendToLog(string message)
-        {
-            this.Dispatcher.Invoke(() =>
-            {
-                logBOX.AppendText(System.Environment.NewLine + System.Environment.NewLine + "#" + message);
-                logBOX.ScrollToEnd();
 
-                //enabling/disabling LOG from accelerometers--
-                {
-                    AX1.logEnabled = AX1check.IsChecked.GetValueOrDefault();
-                    AX2.logEnabled = AX2check.IsChecked.GetValueOrDefault();
-                    AX3.logEnabled = AX3check.IsChecked.GetValueOrDefault();
-                }
-            });
-        }
         private void KeyBoardEnabe_Click(object sender, RoutedEventArgs e)
         {
         }
+
         private void Reset_step_Click(object sender, RoutedEventArgs e)
         {
             AX1.RESET();
@@ -258,11 +293,20 @@
             AX3.RESET();
             sendToLog("Reseted all current ALGO values for all axis");
         }
+
         private void COMguiList_Loaded(object sender, RoutedEventArgs e)
         {
+            //populating com list
+            sendToLog("Populating COM list....");
             portScan();
-            sendToLog("populating COM list");
+
+            //setting the rebound to wateve the checkbox is
+            enableRebound = ReboundDetectionCheckbox.IsChecked.GetValueOrDefault();
+
+            //setting the timeout textbox to the defalt(stored in all AXs, so we only need to look at one)
+            timeoutTextBox.Text = AX1.countTill.ToString();
         }
+
         private void ClearLog_Click(object sender, RoutedEventArgs e)
         {
             this.Dispatcher.Invoke(() =>
@@ -271,11 +315,25 @@
                 
             });
         }
+
         private void ScanForPorts_Click(object sender, RoutedEventArgs e)
         {
+            sendToLog("Refreshing COM list....");
             portScan();
-            sendToLog("refreshing COM list");
         }
+
+        void ReboundDetectionCheckbox_Checked(object sender, RoutedEventArgs e)
+        {
+            enableRebound = ReboundDetectionCheckbox.IsChecked.GetValueOrDefault() ;
+            if (enableRebound) {
+                sendToLog("Rebound has been Enabled.");
+            }
+            if (!enableRebound)
+            {
+                sendToLog("Rebound has been Disabled");
+            }
+        }
+
         private void Enable_COM_Click(object sender, RoutedEventArgs e)
         {
            
@@ -291,19 +349,41 @@
             
 
         }
-        private void CheckBox_Checked(object sender, RoutedEventArgs e)
+
+        private void updateTimoutValue(object sender, RoutedEventArgs e)
         {
-        }
-        private void CheckBox_Checked_1(object sender, RoutedEventArgs e)
-        {
-        }
-        private void CheckBox_Checked_2(object sender, RoutedEventArgs e)
-        {
-        }
-        private void Bar1_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
-        {
+            try
+            {
+                int textBoxValue = int.Parse(timeoutTextBox.Text);
+                if (textBoxValue > 0) {
+                   
+                    AX1.countTill = textBoxValue;
+                    AX2.countTill = textBoxValue;
+                    AX3.countTill = textBoxValue;
+                }
+                else
+                {
+                    error();
+                }
+            }
+            catch
+            {
+                error();
+            }
+            void error()
+            {
+                if (timeoutTextBox.Text == "")
+                {
+                    sendToLog("Please enter timeout value (defalt is 2000, which is 2 seconds).");
+                }
+                else
+                {
+                    sendToLog("Error setting timeout value (was it the correct format aka, an int?).");
+                    timeoutTextBox.Text = AX1.countTill.ToString();
+
+                }
+            }
         }
 
-       
     }
 }
